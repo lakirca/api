@@ -22,9 +22,17 @@ router.post('/', async (req, res) => {
   
   let token = new Token({ 
     name: req.body.name,
-    status: req.body.status 
-    
+    price: req.body.price,
+    isDividend: req.body.isDividend,
+    isIntrest: req.body.isIntrest,
+    isStaked: req.body.isStaked,
+    isRewarded: req.body.isRewarded,
+    isAirdrop: req.body.isAirdrop,
+    isTask: req.body.isTask,
+    isUtil: req.body.isUtil,
   });
+  const tokens = await Token.find();
+  
   try {
     token = await token.save();
     res.json(token)
@@ -42,6 +50,7 @@ router.put('/', async (req, res) => {
 
   const token = await Token.findOneAndUpdate({name: req.body.name}, { 
     name: req.body.name,
+    price: req.body.price,
     isDividend: req.body.isDividend,
     isIntrest: req.body.isIntrest,
     isStaked: req.body.isStaked,

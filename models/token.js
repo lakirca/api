@@ -7,6 +7,9 @@ const Token = mongoose.model('tokens', new mongoose.Schema({
     required: true,
     unique: true
   },
+  price: {
+    type: Number,
+  },
   isDiviend: {
     type: Boolean,
     default: false
@@ -27,10 +30,6 @@ const Token = mongoose.model('tokens', new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  isTask: {
-    type: Boolean,
-    default: false
-  },
   isUtil: {
     type: Boolean,
     default: false
@@ -39,8 +38,13 @@ const Token = mongoose.model('tokens', new mongoose.Schema({
 
 function validateToken(token) {
   const schema = {
-    name: Joi.string().min(2).required(),
-    status: Joi.boolean()
+    name: Joi.string().min(1).required(),
+    price: Joi.number(),
+    isUtil: Joi.boolean(),
+    isRewarded: Joi.boolean(),
+    isAirdrop: Joi.boolean(),
+    isStaked: Joi.boolean(),
+    isIntrest: Joi.boolean(),
   };
 
   return Joi.validate(token, schema);
