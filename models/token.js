@@ -45,6 +45,7 @@ function validateToken(token) {
     isAirdrop: Joi.boolean(),
     isStaked: Joi.boolean(),
     isIntrest: Joi.boolean(),
+    isDiviend: Joi.boolean()
   };
 
   return Joi.validate(token, schema);
