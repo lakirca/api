@@ -34,18 +34,22 @@ const Token = mongoose.model('tokens', new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  // __v: {
+  //   type: Number
+  //   }
 }));
 
 function validateToken(token) {
-  const schema = {
-    name: Joi.string().min(1).required(),
+  const schema = {    
+    name: Joi.string().min(1),
     price: Joi.number(),
     isUtil: Joi.boolean(),
     isRewarded: Joi.boolean(),
     isAirdrop: Joi.boolean(),
     isStaked: Joi.boolean(),
     isIntrest: Joi.boolean(),
-    isDiviend: Joi.boolean()
+    isDiviend: Joi.boolean(),
+    // __v: Joi.number()
   };
 
   return Joi.validate(token, schema);

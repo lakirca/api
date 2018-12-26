@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -21,7 +20,6 @@ router.get('/util', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -32,7 +30,6 @@ router.get('/intrest', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -43,7 +40,6 @@ router.get('/reward', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -54,7 +50,6 @@ router.get('/dividend', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -65,7 +60,6 @@ router.get('/staked', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -76,7 +70,6 @@ router.get('/airdrop', async (req, res) => {
   try {
     res.json(tokens)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -94,16 +87,19 @@ router.post('/', async (req, res) => {
     isStaked: req.body.isStaked,
     isRewarded: req.body.isRewarded,
     isAirdrop: req.body.isAirdrop,
-    isTask: req.body.isTask,
     isUtil: req.body.isUtil,
   });
-  const tokens = await Token.find();
   
   try {
-    token = await token.save();
-    res.json(token)
+  let foundToken = await Token.find({name: token.name});
+  if(foundToken.length > 0) {
+    foundToken = [];
+    res.status(400).json({msg: 'Token already exists!'})
+  }  else {
+      token = await token.save();
+      res.json(token)
+    }
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -111,12 +107,12 @@ router.post('/', async (req, res) => {
 
 /* PUT */
 router.put('/', async (req, res) => {
+  console.log(req.body);
   const { error } = validate(req.body); 
   if (error) return res.status(400).json(error.details[0].message);
   
-  const token = await Token.findOneAndUpdate({name: req.body.name}, { 
+  const token = await Token.findOneAndUpdate({ name: req.body.name}, { 
     name: req.body.name,
-    price: req.body.price,
     isDiviend: req.body.isDiviend,
     isIntrest: req.body.isIntrest,
     isStaked: req.body.isStaked,
@@ -126,13 +122,12 @@ router.put('/', async (req, res) => {
   }, {
     new: true
   });
+  console.log(token);
+  if (!token) return res.status(404).json({msg: 'The token was not found.'});
 
-  if (!token) return res.status(404).json('The token with the given ID was not found.');
-  
   try {
     res.json(token)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
@@ -146,7 +141,6 @@ router.delete('/:id', async (req, res) => {
   try {
     res.json(token)
   } catch (error) {
-    console.error(error);
     res.json(error)
   };
 });
@@ -161,7 +155,6 @@ router.get('/:id', async (req, res) => {
   try {
     res.json(token)
   } catch (error) {
-    console.error(error);
     res.json(error)
   }
 });
